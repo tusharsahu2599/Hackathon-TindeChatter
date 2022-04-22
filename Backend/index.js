@@ -3,21 +3,39 @@ const connect = require('./configs/db')
 const dotenv = require('dotenv');
 const path = require('path');
 
-// import routes
-const messageRoutes = require('./routes/message.route');
-const userRoutes = require('./routes/user.route');
-const chatRoutes = require("./routes/chat.route");
+// const { register } = require('./controllers/user.controller');
+const userController = require('./controllers/user.controller');
 
-
-// import middleware
-const {notFound, errorHandler} = require('./middlewares/error.middleware');
-
-
-app.use("/user", userRoutes);
-app.use("/chat", userRoutes);
-app.use("/message", messageRoutes);
 const app = express();
 app.use(express.json());
 
-connect();
+// import routes
 
+app.post("/register", userController);
+app.get("/register", userController);
+// app.post('/register', function(req, res){
+//     register
+//   });
+
+// 
+
+// app.use("/user", userRoutes);
+// app.use("/chat", chatRoutes);
+// app.use("/message", messageRoutes);
+
+
+// import middleware
+// const {notFound, errorHandler} = require('./middlewares/error.middleware');
+
+
+
+app.listen(3001, async() => 
+{
+    try{
+        connect();
+    }catch(err){
+        console.log(err);
+    }
+    console.log('Server is running on port 3000');
+}
+);

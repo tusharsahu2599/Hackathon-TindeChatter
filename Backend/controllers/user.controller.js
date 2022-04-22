@@ -1,28 +1,53 @@
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken")
 const User = require("../models/user.model");
+const express = require("express");
+const Router = express.Router();
 require("dotenv").config();
 
 const webtoken = (User) => {
   return jwt.sign({ User }, process.env.jwt_web_token);
 };
-const register = async (req, res) => {
+
+Router.post("/register", async (req, res) => {
   try {
-    let users = await User
+    var users = await User
       .find({ email: req.body.email })
       .lean()
       .exec();
-    if (manager === req.body.email) 
+    if (users === req.body.email) 
     {
       res.send({ message: "your mail ID is already in use" });
-    } else {
+    } 
+    else {
       users = await User.create(req.body);
     }
     let token = webtoken(User);
-    res.send({ User, token });
-  } catch (error) {
-    res.send(error);
-  }
-};
+    res.status(200).send({
+        message: "User successfully registered",
+        token: token,
+        user: users
+    });
 
-module.exports = register;
+    } catch (error) {
+    res.status(500).send(error);
+    }
+    console.log(users)
+});
+
+Router.get("/register", async (req, res) =>
+{
+    try
+    {
+        var users = await User.find().lean().exec();
+        res.send(users);
+    }
+    catch(error)
+    {
+        res.status(500).send(error);
+    }
+});
+
+
+module.exports = Router;    
+
