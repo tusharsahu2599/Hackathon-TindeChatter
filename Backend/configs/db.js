@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const connect = () => {
-  mongoose.connect('mongodb://localhost:27017/chats', function(err, db) {
+  mongoose.connect('mongodb://127.0.0.1:27017/chats', function(err, db) {
     if(!err) {
       console.log('MongoDB Connection Succeeded.');
     }
